@@ -1,0 +1,13 @@
+.list {
+  margin: 12px 0 0;
+}
+
+.listItem {
+  margin: 0 0 12px 0;
+  list-style: none;
+}
+
+.item {
+  margin: 8px 0 0 12px;
+  white-space: pre-wrap;
+}
