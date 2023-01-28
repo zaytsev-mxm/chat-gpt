@@ -1,4 +1,4 @@
-import { FC, forwardRef, ForwardedRef } from 'react';
+import { forwardRef } from 'react';
 import styles from '@/styles/ChatGpt.module.css';
 import {Avatar, Grid, Typography} from '@mui/material';
 import {deepOrange, deepPurple} from "@mui/material/colors";
@@ -7,7 +7,7 @@ type Props = {
     history: HistoryEntry[];
 };
 
-export const MessagesList = forwardRef(function MessagesList(props: Props, ref: ForwardedRef<HTMLUListElement>) {
+export const MessagesList = forwardRef<HTMLUListElement, Props>(function MessagesList(props, ref) {
     const { history } = props;
 
     const renderAvatar = (entry: HistoryEntry) => {

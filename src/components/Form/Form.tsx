@@ -1,4 +1,4 @@
-import {ChangeEventHandler, FormEventHandler, forwardRef, ForwardedRef} from 'react';
+import { ChangeEventHandler, FormEventHandler, forwardRef } from 'react';
 import {Button, Grid, TextField} from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 
@@ -9,7 +9,7 @@ type Props = {
     value: string;
 };
 
-export const Form = forwardRef(function Form(props: Props, ref: ForwardedRef<HTMLElement>) {
+export const Form = forwardRef<HTMLElement, Props>(function Form(props, ref) {
     const { onSubmit, onPromptChange, isLoading, value } = props;
 
     const handleSubmit: FormEventHandler = (event) => {
