@@ -1,15 +1,14 @@
-import {FC, RefObject} from 'react';
+import { FC, forwardRef, ForwardedRef } from 'react';
 import styles from '@/styles/ChatGpt.module.css';
 import {Avatar, Grid, Typography} from '@mui/material';
 import {deepOrange, deepPurple} from "@mui/material/colors";
 
 type Props = {
     history: HistoryEntry[];
-    messagesListRef?: RefObject<any>;
 };
 
-export const MessagesList: FC<Props> = (props) => {
-    const { history, messagesListRef } = props;
+export const MessagesList = forwardRef(function MessagesList(props: Props, ref: ForwardedRef<HTMLUListElement>) {
+    const { history } = props;
 
     const renderAvatar = (entry: HistoryEntry) => {
         const sx = {
@@ -19,7 +18,7 @@ export const MessagesList: FC<Props> = (props) => {
     };
 
     return (
-        <ul className={styles.list} ref={messagesListRef}>
+        <ul className={styles.list} ref={ref}>
             {history.map((entry, i) => {
                 const key = `entry_${i}`;
                 return (
@@ -41,4 +40,4 @@ export const MessagesList: FC<Props> = (props) => {
             })}
         </ul>
     );
-};
+});

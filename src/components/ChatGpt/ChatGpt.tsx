@@ -78,13 +78,13 @@ export const ChatGpt: FC<Props> = () => {
     return (
         <Grid container direction="column" justifyContent="space-between" height="100vh">
             <Grid item md={10} overflow="scroll" ref={messagesWrapperRef}>
-                <MessagesList history={history} messagesListRef={messagesListRef} />
+                <MessagesList history={history} ref={messagesListRef} />
             </Grid>
             <Grid item md={1}>
                 <Form
                     onSubmit={handleSubmit}
                     onPromptChange={handlePromptChange}
-                    textAreaRef={textareaRef}
+                    ref={textareaRef}
                     isLoading={isLoading}
                     value={prompt}
                 />

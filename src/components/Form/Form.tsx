@@ -1,4 +1,4 @@
-import {ChangeEventHandler, FC, FormEventHandler, RefObject} from 'react';
+import {ChangeEventHandler, FormEventHandler, forwardRef, ForwardedRef} from 'react';
 import {Button, Grid, TextField} from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 
@@ -6,12 +6,11 @@ type Props = {
     onSubmit?: () => void;
     onPromptChange?: ChangeEventHandler<HTMLTextAreaElement>;
     isLoading?: boolean;
-    textAreaRef: RefObject<any>;
     value: string;
 };
 
-export const Form: FC<Props> = (props) => {
-    const { onSubmit, onPromptChange, isLoading, textAreaRef, value } = props;
+export const Form = forwardRef(function Form(props: Props, ref: ForwardedRef<HTMLElement>) {
+    const { onSubmit, onPromptChange, isLoading, value } = props;
 
     const handleSubmit: FormEventHandler = (event) => {
         event.preventDefault();
@@ -33,7 +32,7 @@ export const Form: FC<Props> = (props) => {
                         onChange={handlePromptChange}
                         fullWidth={true}
                         disabled={isLoading}
-                        inputRef={textAreaRef}
+                        inputRef={ref}
                         autoFocus={true}
                     />
                 </Grid>
@@ -51,4 +50,4 @@ export const Form: FC<Props> = (props) => {
             </Grid>
         </form>
     );
-};
+});
