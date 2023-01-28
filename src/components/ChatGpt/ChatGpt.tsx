@@ -1,9 +1,8 @@
-import { ChangeEventHandler, FC, FormEventHandler, useState, useRef, useEffect, useCallback } from 'react';
-import { CreateCompletionResponse } from 'openai';
+import { ChangeEventHandler, FC, useState, useRef, useEffect, useCallback } from 'react';
 import { Grid } from '@mui/material';
 import MessagesList from '@/components/MessagesList';
 import Form from '@/components/Form';
-import { getSavedHistory, HISTORY_KEY } from './utils';
+import { getSavedHistory, getChatResponse, HISTORY_KEY } from './utils';
 
 type Props = {};
 
@@ -20,11 +19,6 @@ export const ChatGpt: FC<Props> = () => {
             textareaRef.current?.focus();
         }, time);
     }, [textareaRef]);
-
-    const getData = async (prompt: string = ''): Promise<CreateCompletionResponse> => {
-        const res = await fetch(`/api/chat?prompt=${prompt}`);
-        return await res.json();
-    };
 
     const updateHistory = (entry: HistoryEntry) => {
         setHistory((currentHistory) => {
@@ -54,7 +48,7 @@ export const ChatGpt: FC<Props> = () => {
         setIsLoading(true);
         setPrompt('sending...');
 
-        getData(prompt).then(data => {
+        getChatResponse(prompt).then(data => {
             updateHistory({ author: 'robot', text: data.choices[0].text || '' });
             setPrompt('');
             setIsLoading(false);
