@@ -1,10 +1,9 @@
-import {ChangeEventHandler, FC, FormEventHandler, useState, useRef, useEffect, useCallback} from 'react';
+import { ChangeEventHandler, FC, FormEventHandler, useState, useRef, useEffect, useCallback } from 'react';
 import { CreateCompletionResponse } from 'openai';
-import { TextField, Button, Avatar, Grid, Typography } from '@mui/material';
-import SendIcon from '@mui/icons-material/Send';
-import { deepOrange, deepPurple } from '@mui/material/colors';
-import { getSavedHistory, HISTORY_KEY, HistoryEntry } from '@/components/ChatGpt/utils';
-import styles from '@/styles/ChatGpt.module.css';
+import { Grid } from '@mui/material';
+import MessagesList from '@/components/MessagesList';
+import Form from '@/components/Form';
+import { getSavedHistory, HISTORY_KEY } from './utils';
 
 type Props = {};
 
@@ -50,9 +49,7 @@ export const ChatGpt: FC<Props> = () => {
         });
     };
 
-    const handleSubmit: FormEventHandler = (event) => {
-        event.preventDefault();
-
+    const handleSubmit = () => {
         updateHistory({ author: 'me', text: prompt });
         setIsLoading(true);
         setPrompt('sending...');
@@ -78,78 +75,19 @@ export const ChatGpt: FC<Props> = () => {
         scrollToTheBottom();
     }, [history]);
 
-    const renderAvatar = (entry: HistoryEntry) => {
-        const sx = {
-            bgcolor: entry.author === 'me' ? deepOrange[500] : deepPurple[500],
-        };
-        return <Avatar sx={sx}>{entry.author[0].toUpperCase()}</Avatar>;
-    };
-
-    const renderMessages = () => {
-        return (
-            <ul className={styles.list} ref={messagesListRef}>
-                {history.map((entry, i) => {
-                    const key = `entry_${i}`;
-                    return (
-                        <li key={key} className={styles.listItem}>
-                            <Grid container flexWrap="nowrap">
-                                <Grid item>
-                                    {renderAvatar(entry)}
-                                </Grid>
-                                <Grid item>
-                                    <div className={styles.item}>
-                                        <Typography>
-                                            {entry.text.trim()}
-                                        </Typography>
-                                    </div>
-                                </Grid>
-                            </Grid>
-                        </li>
-                    );
-                })}
-            </ul>
-        );
-    };
-
-    const renderForm = () => {
-        return (
-            <form onSubmit={handleSubmit}>
-                <Grid container spacing={12} alignItems="center">
-                    <Grid item md={9}>
-                        <TextField
-                            name="prompt"
-                            id="prompt"
-                            value={prompt}
-                            onChange={handlePromptChange}
-                            fullWidth={true}
-                            disabled={isLoading}
-                            inputRef={textareaRef}
-                            autoFocus={true}
-                        />
-                    </Grid>
-                    <Grid item md={3}>
-                        <Button
-                            type="submit"
-                            color="primary"
-                            variant="contained"
-                            size="large"
-                            disabled={isLoading}
-                        >
-                            <SendIcon />
-                        </Button>
-                    </Grid>
-                </Grid>
-            </form>
-        );
-    };
-
     return (
         <Grid container direction="column" justifyContent="space-between" height="100vh">
             <Grid item md={10} overflow="scroll" ref={messagesWrapperRef}>
-                {renderMessages()}
+                <MessagesList history={history} messagesListRef={messagesListRef} />
             </Grid>
             <Grid item md={1}>
-                {renderForm()}
+                <Form
+                    onSubmit={handleSubmit}
+                    onPromptChange={handlePromptChange}
+                    textAreaRef={textareaRef}
+                    isLoading={isLoading}
+                    value={prompt}
+                />
             </Grid>
         </Grid>
     )
